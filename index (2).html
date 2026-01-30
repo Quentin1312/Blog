@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Blog</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a1a1a;
+            --secondary: #d4a574;
+            --accent: #8b4513;
+            --bg: #faf8f5;
+            --text: #2c2c2c;
+            --text-light: #6a6a6a;
+            --border: #e8e4df;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Sans 3', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        header {
+            background: var(--primary);
+            color: white;
+            padding: 4rem 2rem 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 40%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent, rgba(212, 165, 116, 0.1));
+            transform: skewX(-15deg);
+            transform-origin: top right;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .tagline {
+            font-size: 1.1rem;
+            color: var(--secondary);
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 0.2s forwards;
+        }
+
+        nav {
+            background: white;
+            border-bottom: 2px solid var(--border);
+            padding: 1.5rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .featured {
+            margin-bottom: 5rem;
+            position: relative;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 0.4s forwards;
+        }
+
+        .featured-label {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 0.4rem 1rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+
+        .featured-post {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 3rem;
+            background: white;
+            border: 1px solid var(--border);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .featured-post:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+        }
+
+        .featured-image {
+            background: linear-gradient(135deg, #0082c3 0%, #005a8d 100%);
+            aspect-ratio: 16/10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+        }
+
+        .featured-content {
+            padding: 2.5rem 2.5rem 2.5rem 0;
+        }
+
+        .featured-post h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            color: var(--primary);
+        }
+
+        .post-meta {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .post-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .featured-post p {
+            color: var(--text);
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+
+        .article-content {
+            background: white;
+            padding: 3rem;
+            border: 1px solid var(--border);
+            max-width: 900px;
+            margin: 3rem auto;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 0.6s forwards;
+        }
+
+        .article-content h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin: 2rem 0 1rem;
+        }
+
+        .article-content p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .article-content ul {
+            margin: 1.5rem 0 1.5rem 2rem;
+        }
+
+        .article-content li {
+            margin-bottom: 0.8rem;
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+
+        .article-content strong {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .highlight-box {
+            background: #f0ede8;
+            border-left: 4px solid var(--accent);
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .highlight-box p {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        footer {
+            background: var(--primary);
+            color: white;
+            padding: 3rem 2rem 2rem;
+            margin-top: 6rem;
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: var(--secondary);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .featured-post {
+                grid-template-columns: 1fr;
+            }
+
+            .featured-content {
+                padding: 2rem;
+            }
+
+            .article-content {
+                padding: 2rem 1.5rem;
+            }
+
+            nav ul {
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>Mon Blog</h1>
+            <p class="tagline">Actualités et bons plans</p>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#accueil">Accueil</a></li>
+            <li><a href="#article">Article</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <main class="container">
+        <section class="featured" id="accueil">
+            <span class="featured-label">Nouvelle du jour</span>
+            <article class="featured-post">
+                <div class="featured-image">⛺</div>
+                <div class="featured-content">
+                    <h2>Decathlon Moulins lance un service de location de tentes de toit</h2>
+                    <div class="post-meta">
+                        <span>📅 30 janvier 2026</span>
+                        <span>⏱ 3 min</span>
+                        <span>📍 Moulins</span>
+                    </div>
+                    <p>Le magasin Decathlon de Moulins innove avec un nouveau service de location de tentes de toit à partir de seulement 5€ par jour. Une excellente nouvelle pour les amateurs de camping et de road trips !</p>
+                </div>
+            </article>
+        </section>
+
+        <section class="article-content" id="article">
+            <h3>Un nouveau service accessible à tous</h3>
+            
+            <p>Le magasin Decathlon de Moulins vient de lancer une initiative qui devrait ravir les amateurs d'aventure et de grand air : <strong>la location de tentes de toit à partir de 5€ par jour</strong>.</p>
+
+            <p>Ce nouveau service permet à tous les passionnés de camping et de road trips de tester ce type d'équipement sans avoir à investir dans l'achat d'une tente de toit, dont le prix peut être un frein pour beaucoup.</p>
+
+            <div class="highlight-box">
+                <p>💰 Tarif exceptionnel : 5€/jour seulement !</p>
+            </div>
+
+            <h3>Les avantages de la tente de toit</h3>
+
+            <p>Pour ceux qui ne connaissent pas encore, la tente de toit présente de nombreux avantages :</p>
+
+            <ul>
+                <li><strong>Installation rapide</strong> : quelques minutes suffisent pour monter et démonter votre campement</li>
+                <li><strong>Confort supérieur</strong> : vous dormez en hauteur, à l'abri de l'humidité du sol</li>
+                <li><strong>Sécurité renforcée</strong> : protection contre les animaux et les intempéries</li>
+                <li><strong>Vue panoramique</strong> : réveillez-vous avec une vue imprenable sur votre environnement</li>
+                <li><strong>Gain de place</strong> : pas besoin de transporter une tente classique encombrante</li>
+            </ul>
+
+            <h3>Comment en profiter ?</h3>
+
+            <p>Pour bénéficier de ce service, il vous suffit de vous rendre au magasin Decathlon de Moulins et de vous adresser au rayon camping. Les équipes sur place pourront vous conseiller sur le modèle adapté à votre véhicule et à vos besoins.</p>
+
+            <p>Pensez à réserver à l'avance, notamment pour les week-ends et les périodes de vacances, car ce service risque d'avoir beaucoup de succès !</p>
+
+            <div class="highlight-box">
+                <p>📍 Decathlon Moulins - Rayon Camping</p>
+            </div>
+
+            <h3>Une initiative à saluer</h3>
+
+            <p>Cette initiative de Decathlon Moulins s'inscrit dans une démarche de démocratisation des activités outdoor. En proposant ce service de location à prix mini, l'enseigne permet à chacun de découvrir de nouvelles façons de voyager et de profiter de la nature.</p>
+
+            <p>C'est aussi une solution écologique et économique pour ceux qui souhaitent tester avant d'acheter, ou simplement pour une utilisation occasionnelle.</p>
+
+            <p>Alors, prêts à tenter l'aventure en tente de toit ? 🚗⛺</p>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="social-links">
+                <a href="https://github.com/votre-username">GitHub</a>
+                <a href="https://twitter.com/votre-username">Twitter</a>
+                <a href="mailto:votre@email.com">Email</a>
+            </div>
+            <p>&copy; 2026 Mon Blog. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
